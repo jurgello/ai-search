@@ -78,7 +78,7 @@ func (g *Maze) Load(fileName string) error {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			return errors.New(fmt.Sprintf("cannot open file %s: %s", fileName, err))
+			return fmt.Errorf("cannot open file %s: %s", fileName, err)
 		}
 		fileContents = append(fileContents, line)
 	}
