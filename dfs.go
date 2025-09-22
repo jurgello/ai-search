@@ -107,6 +107,7 @@ func (dfs *DepthFirstSearch) Solve() {
 		}
 		dfs.Game.Explored = append(dfs.Game.Explored, currentNode.State)
 
+		// add valid neighbors and unexplored to Frontier
 		for _, x := range dfs.Neighbors(currentNode) {
 			if !dfs.ContainsState(x) {
 				if !inExplored(x.State, dfs.Game.Explored) {
