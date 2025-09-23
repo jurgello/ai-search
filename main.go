@@ -60,6 +60,12 @@ type Maze struct {
 	NumExplored int
 	Debug       bool
 	SearchType  int
+	Animate     bool
+}
+
+func init() {
+	_ = os.Mkdir("./tmp", os.ModePerm)
+	emptyTmp()
 }
 
 // main is the entry point to our application.
@@ -71,6 +77,9 @@ func main() {
 	// Read command line flags, and set some sensible defaults.
 	flag.StringVar(&maze, "file", "maze.txt", "maze file")
 	flag.StringVar(&searchType, "search", "dfs", "search type")
+	flag.BoolVar(&m.Debug, "debug", false, "write debugging info")
+	flag.BoolVar(&m.Animate, "animate", false, "produce animation")
+
 	flag.Parse()
 
 	// Load and parse the maze file.
@@ -91,13 +100,20 @@ func main() {
 	}
 	if len(m.Solution.Actions) > 0 {
 		fmt.Println("Solution:")
-		m.printMaze()
+		//m.printMaze()
+
 		fmt.Println("Solutions is", len(m.Solution.Cells), "steps")
 		fmt.Println("Time to solve:", time.Since(startTime))
+		m.OutputImage("image.png")
 	} else {
 		fmt.Println("No solution.")
 	}
 	fmt.Println("Explored", len(m.Explored), "nodes.")
+	if m.Animate {
+		fmt.Println("Building animation...")
+		m.OutputAnimatedImage()
+		fmt.Println("Done!")
+	}
 }
 
 func solveDFS(m *Maze) {

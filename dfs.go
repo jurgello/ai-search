@@ -104,8 +104,14 @@ func (dfs *DepthFirstSearch) Solve() {
 				Cells:   cells,
 			}
 			dfs.Game.Explored = append(dfs.Game.Explored, currentNode.State)
+			break
 		}
 		dfs.Game.Explored = append(dfs.Game.Explored, currentNode.State)
+
+		// Build animation frame if appropriate
+		if dfs.Game.Animate {
+			dfs.Game.OutputImage(fmt.Sprintf("tmp/%06d.png", dfs.Game.NumExplored))
+		}
 
 		// add valid neighbors and unexplored to Frontier
 		for _, x := range dfs.Neighbors(currentNode) {
