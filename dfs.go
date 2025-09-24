@@ -35,6 +35,7 @@ func (dfs *DepthFirstSearch) Empty() bool {
 	return len(dfs.Frontier) == 0
 }
 
+// remove the node in the last in first out (lifo)
 func (dfs *DepthFirstSearch) Remove() (*Node, error) {
 	if len(dfs.Frontier) > 0 {
 		if dfs.Game.Debug {
