@@ -9,3 +9,10 @@ dijkstra:
 
 gbfs:
 	go run . -file=maze2.txt -search=gbfs -animate=true		
+
+
+astar:
+	go run . -file=maze2.txt -search=astar -animate=true		
+
+astar2:
+	go run . -file=maze-100-steps.txt -search=astar -animate=true	

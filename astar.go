@@ -10,22 +10,23 @@ import (
 )
 
 // Chooses the neighbor with the lowest manhattan cost
-type GreedyBestFirstSearch struct {
-	Frontier PriorityQueueGBFS
+type AstarSearch struct {
+	Frontier PriorityQueueAstar
 	Game     *Maze
 }
 
-func (d *GreedyBestFirstSearch) GetFrontier() []*Node {
+func (d *AstarSearch) GetFrontier() []*Node {
 	return d.Frontier
 }
 
-func (d *GreedyBestFirstSearch) Add(i *Node) {
-	i.CostToGoal = i.ManhattanDistance(d.Game.Goal)
+func (d *AstarSearch) Add(i *Node) {
+	i.CostToGoal = i.ManhattanDistance(d.Game.Start)
+	i.EstimatedCostToGoal = eculideanDist(i.State, d.Game.Goal) + float64(i.CostToGoal)
 	d.Frontier.Push(i)
 	heap.Init(&d.Frontier)
 }
 
-func (d *GreedyBestFirstSearch) ContainsState(i *Node) bool {
+func (d *AstarSearch) ContainsState(i *Node) bool {
 	for _, x := range d.Frontier {
 		if x.State == i.State {
 			return true
@@ -34,11 +35,11 @@ func (d *GreedyBestFirstSearch) ContainsState(i *Node) bool {
 	return false
 }
 
-func (d *GreedyBestFirstSearch) Empty() bool {
+func (d *AstarSearch) Empty() bool {
 	return len(d.Frontier) == 0
 }
 
-func (d *GreedyBestFirstSearch) Remove() (*Node, error) {
+func (d *AstarSearch) Remove() (*Node, error) {
 	if len(d.Frontier) > 0 {
 		if d.Game.Debug {
 			fmt.Println("Frontier before remove:")
@@ -51,8 +52,8 @@ func (d *GreedyBestFirstSearch) Remove() (*Node, error) {
 	return nil, errors.New("frontier is empty")
 }
 
-func (d *GreedyBestFirstSearch) Solve() {
-	fmt.Println("Starting to solve maze using Greedy first search...")
+func (d *AstarSearch) Solve() {
+	fmt.Println("Starting to solve maze using astar search...")
 	d.Game.NumExplored = 0
 
 	start := Node{
@@ -130,7 +131,7 @@ func (d *GreedyBestFirstSearch) Solve() {
 	}
 }
 
-func (d *GreedyBestFirstSearch) Neighbors(node *Node) []*Node {
+func (d *AstarSearch) Neighbors(node *Node) []*Node {
 	row := node.State.Row
 	col := node.State.Col
 
