@@ -6,3 +6,6 @@ bfs:
 
 dijkstra:
 	go run . -file=maze2.txt -search=dijkstra -animate=true	
+
+gbfs:
+	go run . -file=maze2.txt -search=gbfs -animate=true		
